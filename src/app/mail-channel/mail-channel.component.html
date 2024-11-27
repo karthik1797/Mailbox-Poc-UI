@@ -1,0 +1,40 @@
+<div *ngIf="!accessToken">
+    <button (click)="signInOutlook()">Sign in with Outlook</button>
+  </div>
+  <div *ngIf="accessToken && mails.length > 0" class="mail-container">
+    <div class="mail-list">
+      <h2>Inbox Mails</h2>
+      <div class="mail-card" *ngFor="let mail of mails" (click)="selectMail(mail)">
+        <div class="mail-header">
+          <strong>{{ mail.subject }}</strong>
+          <span>{{ mail.sentDateTime | date:'short' }}</span>
+        </div>
+        <div class="mail-body">
+          <p><strong>From:</strong> {{ mail.from.emailAddress.name }} ({{ mail.from.emailAddress.address }})</p>
+        </div>
+      </div>
+    </div>
+    <div class="mail-detail" *ngIf="selectedMail">
+      <h2>{{ selectedMail.subject }}</h2>
+      <p><strong>From:</strong> {{ selectedMail.from.emailAddress.name }} ({{ selectedMail.from.emailAddress.address }})  
+           <button (click)="openComposePopup()">Reply</button></p>
+      <p><strong>Sent:</strong> {{ selectedMail.sentDateTime | date:'fullDate' }}</p>
+      <div [innerHTML]="sanitizeHtml(selectedMail.body.content)"></div>
+    </div>
+  </div>
+  
+  <div class="compose-popup" *ngIf="showComposePopup">
+    <div class="compose-popup-content">
+      <h2>Compose Mail</h2>
+      <form [formGroup]="composeForm" (ngSubmit)="sendMail()">
+        <label for="to">To:</label>
+        <input type="email" id="to" formControlName="to" required>
+        <label for="subject">Subject:</label>
+        <input type="text" id="subject" formControlName="subject" required>
+        <label for="body">Body:</label>
+        <textarea id="body" formControlName="body" required></textarea>
+        <button type="submit">Send</button>
+        <button type="button" (click)="closeComposePopup()">Cancel</button>
+      </form>
+    </div>
+  </div>
