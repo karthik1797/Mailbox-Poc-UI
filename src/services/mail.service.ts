@@ -66,6 +66,9 @@ getToken(code: string) {
 
 getInboxMails(accessToken: string) {
   const headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`);
+  // const params = new HttpParams()
+  // .set('$top', "5")
+  // .set('$skip', "0");
   return this.http.get(this.graphUrl, { headers });
 }
 
