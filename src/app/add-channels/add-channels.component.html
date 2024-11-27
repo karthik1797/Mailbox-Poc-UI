@@ -1,0 +1,26 @@
+<div class="container">
+    <div class="header">
+      <h1>Connect to channel</h1>
+      <div class="inbox-input" *ngIf="this.code">
+        <label for="subject">Inbox name</label>
+        <input type="text" placeholder="please enter the inbox name" [(ngModel)]="inboxName">
+        <button (click)="saveInbox('outlook')"> save</button>
+      </div>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <h4>
+          <img src="assets/icons/gmail.png" alt="Gmail Icon" class="icon"> Google
+        </h4>
+        <p>Add your Gmail account</p>
+        <button>Connect</button>
+      </div>
+      <div class="card">
+        <h4>
+          <img src="assets/icons/outlook.png" alt="Outlook Icon" class="icon"> Outlook
+        </h4>
+        <p>Add your Outlook account</p>
+        <button (click)="signInOutlook()">Connect</button>
+      </div>
+    </div>
+  </div>

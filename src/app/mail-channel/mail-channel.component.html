@@ -1,8 +1,15 @@
-<div *ngIf="!accessToken">
-    <button (click)="signInOutlook()">Sign in with Outlook</button>
+<div class="mail-container">
+  <div class="inbox-list">
+    <h2>Inbox</h2>
+    <div class="mail-card" *ngFor="let inbox of inboxData" (click)="selectInbox(inbox)">
+      <div class="mail-header">
+        <strong>{{ inbox.inboxName }}</strong>
+        <span>{{ inbox.provider }}</span>
+      </div>
+    </div>
   </div>
-  <div *ngIf="accessToken && mails.length > 0" class="mail-container">
-    <div class="mail-list">
+  <div class="mail-content">
+    <div class="mail-list" *ngIf="mails.length > 0">
       <h2>Inbox Mails</h2>
       <div class="mail-card" *ngFor="let mail of mails" (click)="selectMail(mail)">
         <div class="mail-header">
@@ -22,19 +29,20 @@
       <div [innerHTML]="sanitizeHtml(selectedMail.body.content)"></div>
     </div>
   </div>
-  
-  <div class="compose-popup" *ngIf="showComposePopup">
-    <div class="compose-popup-content">
-      <h2>Compose Mail</h2>
-      <form [formGroup]="composeForm" (ngSubmit)="sendMail()">
-        <label for="to">To:</label>
-        <input type="email" id="to" formControlName="to" required>
-        <label for="subject">Subject:</label>
-        <input type="text" id="subject" formControlName="subject" required>
-        <label for="body">Body:</label>
-        <textarea id="body" formControlName="body" required></textarea>
-        <button type="submit">Send</button>
-        <button type="button" (click)="closeComposePopup()">Cancel</button>
-      </form>
-    </div>
+</div>
+
+<div class="compose-popup" *ngIf="showComposePopup">
+  <div class="compose-popup-content">
+    <h2>Compose Mail</h2>
+    <form [formGroup]="composeForm" (ngSubmit)="sendMail()">
+      <label for="to">To:</label>
+      <input type="email" id="to" formControlName="to" required>
+      <label for="subject">Subject:</label>
+      <input type="text" id="subject" formControlName="subject" required>
+      <label for="body">Body:</label>
+      <textarea id="body" formControlName="body" required></textarea>
+      <button type="submit">Send</button>
+      <button type="button" (click)="closeComposePopup()">Cancel</button>
+    </form>
   </div>
+</div>

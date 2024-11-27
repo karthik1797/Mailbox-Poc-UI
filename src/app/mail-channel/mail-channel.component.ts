@@ -17,31 +17,43 @@ export class MailChannelComponent {
   selectedMail: any = null;
   showComposePopup: boolean = false;
   composeForm: FormGroup = new FormGroup({});
+  inboxData: any;
   constructor(private mailService: MailService,  private fb: FormBuilder,private route: ActivatedRoute,  private sanitizer: DomSanitizer) { 
     this.generateComposeForm()
   }
 
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe(params => {
-      const code = params['code'];
-      if (code) {
-        this.mailService.getToken(code).subscribe((response: any) => {
-          console.log('Access Token:', response);
-          this.accessToken = response.access_token;
-          if (this.accessToken) {
-            localStorage.setItem('accessToken', this.accessToken);
-            this.getInboxMails(this.accessToken);
-            window.history.replaceState({}, document.title, window.location.pathname);
-          }
-        });
-      } else {
-        this.accessToken = localStorage.getItem('accessToken');
+    // this.route.queryParams.subscribe(params => {
+    //   const code = params['code'];
+    //   if (code) {
+    //     this.mailService.getToken(code).subscribe((response: any) => {
+    //       console.log('Access Token:', response);
+    //       this.accessToken = response.access_token;
+    //       if (this.accessToken) {
+    //         localStorage.setItem('accessToken', this.accessToken);
+    //         this.getInboxMails(this.accessToken);
+    //         window.history.replaceState({}, document.title, window.location.pathname);
+    //       }
+    //     });
+    //   } else {
+    //     this.accessToken = localStorage.getItem('accessToken');
+    //     if (this.accessToken) {
+    //       this.getInboxMails(this.accessToken);
+    //     }
+    //   }
+    // });
+    this.inboxData = JSON.parse(localStorage.getItem('Inbox') || '[]');
+  }
+
+  selectInbox(inbox: any) {
+    this.accessToken = inbox.accessToken
         if (this.accessToken) {
-          this.getInboxMails(this.accessToken);
+          if(inbox.provider === 'outlook'){
+            this.getInboxMails(this.accessToken);
+          }
+      
         }
-      }
-    });
   }
 
   generateComposeForm() {
@@ -57,8 +69,12 @@ export class MailChannelComponent {
       this.mails = mails.value;
       this.selectedMail = this.mails[0];
       console.log('Inbox Mails:', this.mails);
+    }, error => {
+      console.error('Error fetching inbox mails:', error);
+      this.signInOutlook();
     });
   }
+  
 
   selectMail(mail: any): void {
     this.selectedMail = mail;

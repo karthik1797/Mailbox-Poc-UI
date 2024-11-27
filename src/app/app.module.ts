@@ -6,11 +6,15 @@ import { AppComponent } from './app.component';
 import { MailChannelComponent } from './mail-channel/mail-channel.component';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { SidebarComponent } from './sidebar/sidebar.component';
+import { AddChannelsComponent } from './add-channels/add-channels.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    MailChannelComponent
+    MailChannelComponent,
+    SidebarComponent,
+    AddChannelsComponent
   ],
   imports: [
     BrowserModule,
