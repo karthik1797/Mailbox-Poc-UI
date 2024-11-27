@@ -5,7 +5,7 @@ import { AddChannelsComponent } from './add-channels/add-channels.component';
 
 
 const routes: Routes = [
-  { path: '', component: MailChannelComponent },
+  { path: '', component: AddChannelsComponent },
   { path: 'Inbox', component: MailChannelComponent },
   { path: 'Channels', component: AddChannelsComponent }
 ];
